@@ -1,0 +1,50 @@
+<svg width="600" height="400" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .box { fill: #1a1c1e; stroke: #7b7265; stroke-width: 2; }
+    .arrow { fill: none; stroke: #d8d4cf; stroke-width: 2; }
+    .text { fill: #d8d4cf; font-family: sans-serif; font-size: 14px; }
+    .highlight { fill: #5072A7; }
+  </style>
+  
+  <!-- Upload Box -->
+  <rect x="50" y="150" width="140" height="70" rx="5" class="box"/>
+  <text x="120" y="175" class="text" text-anchor="middle">Upload Images</text>
+  <text x="120" y="195" class="text" text-anchor="middle" font-size="12">(Start/Reset)</text>
+  
+  <!-- Process Box -->
+  <rect x="250" y="80" width="140" height="70" rx="5" class="box"/>
+  <text x="320" y="115" class="text" text-anchor="middle">Preprocessing</text>
+  <text x="320" y="135" class="text" text-anchor="middle" font-size="12">(Optional)</text>
+  
+  <!-- Augment Box -->
+  <rect x="250" y="220" width="140" height="70" rx="5" class="box"/>
+  <text x="320" y="255" class="text" text-anchor="middle">Augmentation</text>
+  <text x="320" y="275" class="text" text-anchor="middle" font-size="12">(Optional)</text>
+  
+  <!-- Detect Box -->
+  <rect x="460" y="150" width="140" height="70" rx="5" class="box highlight"/>
+  <text x="530" y="175" class="text" text-anchor="middle">Detect Tumors</text>
+  <text x="530" y="195" class="text" text-anchor="middle" font-size="12">(Original/Processed)</text>
+  
+  <!-- Arrows -->
+  <path d="M190 185 H220 L250 115" class="arrow" marker-end="url(#arrowhead)"/>
+  <path d="M190 185 H220 L250 255" class="arrow" marker-end="url(#arrowhead)"/>
+  <path d="M390 115 L430 185" class="arrow" marker-end="url(#arrowhead)"/>
+  <path d="M390 255 L430 185" class="arrow" marker-end="url(#arrowhead)"/>
+  
+  <!-- Direct path arrow -->
+  <path d="M190 185 H460" class="arrow" stroke-dasharray="5,5"/>
+  <text x="325" y="170" class="text" font-size="12">Direct Detection</text>
+  
+  <!-- Reset arrow -->
+  <path d="M120 100 A50 50 0 0 1 120 150" class="arrow" stroke-dasharray="5,5"/>
+  <text x="80" y="80" class="text" font-size="12">Reset by</text>
+  <text x="80" y="95" class="text" font-size="12">uploading again</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d8d4cf"/>
+    </marker>
+  </defs>
+</svg>

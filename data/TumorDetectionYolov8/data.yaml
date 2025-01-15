@@ -1,0 +1,6 @@
+train: ./Neuroscan_dataset/TumorDetectionYolov8/train/images
+val: ./Neuroscan_dataset/TumorDetectionYolov8/valid/images
+test: ./Neuroscan_dataset/TumorDetectionYolov8/test/images
+
+nc: 3
+names: ["Glioma", "Meningioma", "Pituitary"]

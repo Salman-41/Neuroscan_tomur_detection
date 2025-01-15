@@ -1,0 +1,8 @@
+Flask
+Werkzeug
+gunicorn
+numpy
+opencv-python
+scikit-image
+tensorflow
+flask_cors

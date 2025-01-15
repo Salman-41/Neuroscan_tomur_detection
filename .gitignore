@@ -1,0 +1,28 @@
+# Python
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+
+# Virtual Environments
+venv/
+env/
+
+# macOS
+.DS_Store
+
+# Logs and databases
+*.log
+*.sqlite3
+
+# Images (if you don’t want to track them in Git)
+data/raw/images/*
+data/raw/labels/*
+data/preprocessed/*
+data/augmented/*
+
+# Config files
+config.json
