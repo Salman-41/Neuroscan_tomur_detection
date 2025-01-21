@@ -4,12 +4,19 @@ import pywt
 
 def has_noise(image, threshold=0.01):
     """
-    Determines if the image has significant noise using wavelet-based thresholding.
-    Args:
-        image (np.ndarray): Input image.
-        threshold (float): Noise threshold level.
-    Returns:
-        bool: True if noise level is above the threshold, otherwise False.
+    Determine if the image has significant noise using wavelet-based thresholding.
+
+    Parameters
+    ----------
+    image : numpy.ndarray
+        Input image.
+    threshold : float, optional
+        Noise threshold level.
+
+    Returns
+    -------
+    bool
+        True if noise level is above the threshold, otherwise False.
     """
     # Convert image to grayscale if it's not already
     if len(image.shape) == 3:
@@ -27,11 +34,17 @@ def has_noise(image, threshold=0.01):
 
 def reduce_noise(image):
     """
-    Applies Non-Local Means denoising to reduce noise in the image.
-    Args:
-        image (np.ndarray): Input image.
-    Returns:
-        np.ndarray: Noise-reduced image.
+    Apply Non-Local Means denoising to reduce noise in the image.
+
+    Parameters
+    ----------
+    image : numpy.ndarray
+        Input image.
+
+    Returns
+    -------
+    numpy.ndarray
+        Noise-reduced image.
     """
     # Convert to grayscale for consistency
     if len(image.shape) == 3:

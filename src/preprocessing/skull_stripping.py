@@ -2,6 +2,24 @@ import cv2
 import numpy as np
 
 def skull_strip(image):
+    """
+    Perform skull stripping on an image to remove non-brain tissues.
+
+    Parameters
+    ----------
+    image : numpy.ndarray
+        The input image to be skull stripped.
+
+    Returns
+    -------
+    numpy.ndarray
+        The skull-stripped image.
+
+    Raises
+    ------
+    ValueError
+        If no contours are found in the image.
+    """
     # Ensure the image is in grayscale format
     if len(image.shape) == 3:
         image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)

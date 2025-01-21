@@ -1,9 +1,21 @@
-
 import cv2
 import numpy as np
 import logging
 
 def remove_artifacts(image):
+    """
+    Remove artifacts from an image using a Gaussian High-Pass Filter.
+
+    Parameters
+    ----------
+    image : numpy.ndarray
+        The input image from which to remove artifacts.
+
+    Returns
+    -------
+    numpy.ndarray
+        The image with artifacts removed.
+    """
     logging.info("Starting artifact removal using Gaussian High-Pass Filter")
     try:
         blurred = cv2.GaussianBlur(image, (21, 21), 0)  # Large kernel for strong smoothing

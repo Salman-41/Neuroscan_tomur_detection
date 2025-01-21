@@ -2,13 +2,22 @@ import cv2
 
 def adjust_intensity(image, alpha, beta):
     """
-    Args:
-      alpha: A scaling factor for the pixel values.  
-             A value greater than 1 increases the brightness, 
-             a value between 0 and 1 decreases it.
-             A value of 1 keeps the original intensity.
-      beta: A constant value to be added to each pixel value.
-            This can further increase or decrease the brightness.
+    Adjust an image's brightness or contrast based on alpha and beta values.
+
+    Parameters
+    ----------
+    image : numpy.ndarray
+        The input image to be adjusted.
+    alpha : float
+        A scaling factor for pixel values. A value > 1 increases brightness,
+        a value < 1 decreases brightness, and a value of 1 keeps it unchanged.
+    beta : float
+        A constant value added to each pixel, further increasing or decreasing brightness.
+
+    Returns
+    -------
+    numpy.ndarray
+        The intensity-adjusted image.
     """
     adjusted = cv2.convertScaleAbs(image, alpha=alpha, beta=beta)
     return adjusted

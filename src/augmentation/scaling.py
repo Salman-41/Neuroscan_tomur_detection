@@ -2,11 +2,21 @@ import cv2
 
 def scale_image(image, fx, fy):
     """
-    Args:
-    image: The input image.
-    None: This means that the output image size will be calculated based on the scaling factors (fx and fy).
-    fx: The scaling factor for the x-axis (horizontal). A value greater than 1 scales the image wider, less than 1 scales it narrower.
-    fy: The scaling factor for the y-axis (vertical).
+    Scale an image along the x and y axes.
+
+    Parameters
+    ----------
+    image : numpy.ndarray
+        The input image to be scaled.
+    fx : float
+        The scaling factor for the horizontal dimension.
+    fy : float
+        The scaling factor for the vertical dimension.
+
+    Returns
+    -------
+    numpy.ndarray
+        The scaled image.
     """
     scaled = cv2.resize(image, None, fx=fx, fy=fy)
     return scaled
