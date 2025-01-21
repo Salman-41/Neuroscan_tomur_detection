@@ -32,19 +32,49 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif' 'webp'}
 # IMAGE STORAGE MANAGEMENT
 #==============================================================================
 class ImageStore:
-    """Persistent cache for storing images with expiration times"""
+    """
+    Persistent cache for storing images with expiration times.
+
+    Attributes
+    ----------
+    store : dict
+        Internal dictionary to hold images and their expiration metadata.
+    """
     def __init__(self):
         self.store = {}
         
     def set(self, key: str, image: np.ndarray, timeout: int = 3600) -> None:
-        """Store image with expiration time"""
+        """
+        Store an image in the cache with an expiration time.
+
+        Parameters
+        ----------
+        key : str
+            Unique identifier for the image.
+        image : numpy.ndarray
+            Image data to be stored.
+        timeout : int, optional
+            Time (seconds) before the image expires.
+        """
         self.store[key] = {
             'image': image,
             'expires': time.time() + timeout
         }
         
     def get(self, key: str) -> Optional[np.ndarray]:
-        """Get image if it exists and hasn't expired"""
+        """
+        Retrieve an image from the cache if valid.
+
+        Parameters
+        ----------
+        key : str
+            Unique identifier for the image.
+
+        Returns
+        -------
+        numpy.ndarray or None
+            The stored image or None if expired/absent.
+        """
         item = self.store.get(key)
         if item is None:
             return None
@@ -73,11 +103,35 @@ except Exception as e:
 # UTILITY FUNCTIONS
 #==============================================================================
 def allowed_file(filename: str) -> bool:
-    """Check if uploaded file has allowed extension"""
+    """
+    Check if the file extension is allowed.
+
+    Parameters
+    ----------
+    filename : str
+        The name of the file to check.
+
+    Returns
+    -------
+    bool
+        True if allowed, otherwise False.
+    """
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def save_to_memory(file) -> Union[str, None]:
-    """Save uploaded file to memory store with UUID filename"""
+    """
+    Save an uploaded file to memory with a unique filename.
+
+    Parameters
+    ----------
+    file : werkzeug.datastructures.FileStorage
+        The uploaded file object.
+
+    Returns
+    -------
+    str or None
+        Unique filename, or None if invalid.
+    """
     if not (file and allowed_file(file.filename)):
         return None
     
@@ -93,8 +147,20 @@ def save_to_memory(file) -> Union[str, None]:
         logger.error(f"Error processing file {file.filename}: {e}")
         return None
 
-def convert_to_grayscale(image):
-    """Convert RGB image to grayscale if needed"""
+def convert_to_grayscale(image: np.ndarray) -> np.ndarray:
+    """
+    Convert an RGB image to grayscale if needed.
+
+    Parameters
+    ----------
+    image : numpy.ndarray
+        Input image array.
+
+    Returns
+    -------
+    numpy.ndarray
+        Grayscale image array.
+    """
     if len(image.shape) == 3:  # If the image has 3 channels (RGB)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     return image
@@ -103,7 +169,19 @@ def convert_to_grayscale(image):
 # CORE PROCESSING FUNCTIONS
 #==============================================================================
 def detect_tumor(image_data: np.ndarray) -> tuple:
-    """Detect tumors in image using YOLOv8 model"""
+    """
+    Detect tumors in an image using the YOLOv8 model.
+
+    Parameters
+    ----------
+    image_data : numpy.ndarray
+        Image in which to detect tumors.
+
+    Returns
+    -------
+    tuple
+        (modified_image, tumor_detected, detection_info).
+    """
     try:
         original_image = image_data.copy()
         rgb_image = cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB)
@@ -139,8 +217,22 @@ def detect_tumor(image_data: np.ndarray) -> tuple:
         logger.error(f"Error during tumor detection: {e}")
         return None, False, []
 
-def handle_processing(process_type, image_data):
-    """Handle different types of image preprocessing"""
+def handle_processing(process_type: str, image_data: np.ndarray) -> Optional[np.ndarray]:
+    """
+    Apply specific preprocessing to an image.
+
+    Parameters
+    ----------
+    process_type : str
+        Name of the preprocessing method.
+    image_data : numpy.ndarray
+        Image data on which to apply processing.
+
+    Returns
+    -------
+    numpy.ndarray or None
+        Processed image or None if process_type is invalid.
+    """
     # Convert to grayscale for processes that require it
     # if process_type in ['skull_stripping']:
     #     image_data = convert_to_grayscale(image_data)
@@ -158,8 +250,22 @@ def handle_processing(process_type, image_data):
         return processed_image
     return None
 
-def handle_augmentation(augment_type, image):
-    """Handle different types of image augmentation"""
+def handle_augmentation(augment_type: str, image: np.ndarray) -> Optional[np.ndarray]:
+    """
+    Apply specific augmentation to an image.
+
+    Parameters
+    ----------
+    augment_type : str
+        Name of the augmentation method.
+    image : numpy.ndarray
+        Image data to be augmented.
+
+    Returns
+    -------
+    numpy.ndarray or None
+        Augmented image or None if augment_type is invalid.
+    """
     augment_map = {
         'rotation': lambda img: rotation.rotate_image(img, 90),
         'translation': lambda img: translation.translate_image(img, 20, 20),
@@ -186,7 +292,14 @@ def handle_augmentation(augment_type, image):
 #------------------------------------------------------------------------------
 @app.route('/')
 def index():
-    """Serve the main application page"""
+    """
+    Serve the main application page.
+
+    Returns
+    -------
+    flask.Response
+        Rendered index template.
+    """
     return render_template('index.html')
 
 #------------------------------------------------------------------------------
@@ -194,7 +307,14 @@ def index():
 #------------------------------------------------------------------------------
 @app.route('/upload', methods=['POST'])
 def upload_image():
-    """Handle image upload requests"""
+    """
+    Handle image upload requests and save images to memory.
+
+    Returns
+    -------
+    flask.Response
+        JSON response with URLs or error message.
+    """
     if 'images' not in request.files:
         return jsonify({'error': 'No file part'}), 400
 
@@ -209,8 +329,20 @@ def upload_image():
     return jsonify({'image_urls': [f'/uploads/{f}' for f in saved_files]}), 200
 
 @app.route('/uploads/<filename>')
-def uploaded_file(filename):
-    """Serve stored images"""
+def uploaded_file(filename: str):
+    """
+    Serve images from memory store.
+
+    Parameters
+    ----------
+    filename : str
+        Unique name of the stored image.
+
+    Returns
+    -------
+    flask.Response
+        The requested image or an error message.
+    """
     try:
         image = image_store.get(filename)
         if image is None:
@@ -235,7 +367,14 @@ def uploaded_file(filename):
 #------------------------------------------------------------------------------
 @app.route('/process', methods=['POST'])
 def process_images():
-    """Handle image preprocessing requests"""
+    """
+    Apply specified preprocessing to one or more images.
+
+    Returns
+    -------
+    flask.Response
+        JSON response with processed image URLs or error.
+    """
     data = request.get_json()
     process_type = data['type']
     filenames = data['filenames']
@@ -260,7 +399,14 @@ def process_images():
 
 @app.route('/augment', methods=['POST'])
 def augment_images():
-    """Handle image augmentation requests"""
+    """
+    Apply specified augmentation to one or more images.
+
+    Returns
+    -------
+    flask.Response
+        JSON response with augmented image URLs or error.
+    """
     data = request.get_json()
     augment_type = data['type']
     filenames = data['filenames']
@@ -284,7 +430,14 @@ def augment_images():
 
 @app.route('/detect', methods=['POST'])
 def detect_tumor_route():
-    """Handle tumor detection requests"""
+    """
+    Detect tumor(s) in the given images using the YOLOv8 model.
+
+    Returns
+    -------
+    flask.Response
+        JSON response containing detection results or an error.
+    """
     try:
         data = request.get_json()
         filenames = data.get('filenames', [])
@@ -351,8 +504,20 @@ def detect_tumor_route():
 # Static File Routes
 #------------------------------------------------------------------------------
 @app.route('/static/favicon/<path:filename>')
-def favicon(filename):
-    """Serve favicon files"""
+def favicon(filename: str):
+    """
+    Serve favicon files.
+
+    Parameters
+    ----------
+    filename : str
+        Name of the favicon file.
+
+    Returns
+    -------
+    flask.Response
+        The requested favicon file.
+    """
     return send_from_directory(
         os.path.join(app.root_path, 'web_interface', 'favicon'),
         filename,

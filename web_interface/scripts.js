@@ -1,6 +1,11 @@
 //===================================
 // Function to update favicon based on state
 //===================================
+/**
+ * Updates the favicon based on the current state.
+ * @param {string} state - The state key (e.g., 'idle', 'processing').
+ * @returns {void}
+ */
 function updateFavicon(state) {
   const favicon = document.getElementById("favicon");
   const states = {
@@ -140,6 +145,11 @@ document.addEventListener("DOMContentLoaded", () => {
   //===================================
   // Function to toggle buttons' disabled state
   //===================================
+  /**
+   * Toggles various buttons' disabled state.
+   * @param {boolean} disable - Whether to disable (true) or enable (false) the buttons.
+   * @returns {void}
+   */
   function toggleButtons(disable) {
     document
       .querySelectorAll("#preprocessing button, #augmentBtn, #detectTumorBtn")
@@ -151,6 +161,12 @@ document.addEventListener("DOMContentLoaded", () => {
   //===================================
   // Function to apply processing or augmentation
   //===================================
+  /**
+   * Applies either image processing or augmentation.
+   * @param {string} type - The operation type ('augmention', 'process', or 'detect').
+   * @param {number} [retries=3] - Number of retry attempts.
+   * @returns {Promise<void>}
+   */
   async function applyProcessingOrAugmentation(type, retries = 3) {
     updateFavicon("processing");
     let lastError = null;
@@ -228,6 +244,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  /**
+   * Retrieves the filenames to process based on the operation type.
+   * @param {string} type - The operation type.
+   * @returns {Array<string>} Array of filenames.
+   */
   function getFilenamesToProcess(type) {
     return type === "detect"
       ? imageState.currentFilenames.length > 0
@@ -239,6 +260,11 @@ document.addEventListener("DOMContentLoaded", () => {
   //===================================
   // Function to display detection results
   //===================================
+  /**
+   * Displays detection results with bounding-box information.
+   * @param {Array} results - The detection results array.
+   * @returns {void}
+   */
   function displayDetectionResults(results) {
     processedImagesPreview.innerHTML = "";
     const statsContainer = document.getElementById("detectionStats");
@@ -343,6 +369,11 @@ document.addEventListener("DOMContentLoaded", () => {
   //===================================
   // Function to display processed images
   //===================================
+  /**
+   * Displays processed images on the page.
+   * @param {Array<string>} imageUrls - Array of URLs to display.
+   * @returns {void}
+   */
   function displayProcessedImages(imageUrls) {
     processedImagesPreview.innerHTML = "";
     imageUrls.forEach((url) => {
@@ -401,7 +432,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    updateFavicon("processing"); // Only set processing if files are selected
+    updateFavicon("processing");
     const formData = new FormData();
     Array.from(files).forEach((file) => formData.append("images", file));
 
