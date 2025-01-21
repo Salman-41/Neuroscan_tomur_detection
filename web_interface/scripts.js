@@ -173,12 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
           imageState.lastOperation = type;
         }
 
-        const filenamesToProcess =
-          type === "detect"
-            ? imageState.currentFilenames.length > 0
-              ? imageState.currentFilenames
-              : imageState.originalFilenames
-            : imageState.originalFilenames;
+        const filenamesToProcess = getFilenamesToProcess(type);
 
         const response = await fetch(
           type === "augmentation"
@@ -231,6 +226,14 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
     }
+  }
+
+  function getFilenamesToProcess(type) {
+    return type === "detect"
+      ? imageState.currentFilenames.length > 0
+        ? imageState.currentFilenames
+        : imageState.originalFilenames
+      : imageState.originalFilenames;
   }
 
   //===================================
@@ -393,7 +396,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const files = datasetInput.files;
     if (files.length === 0) {
-      updateFavicon("error"); // Set error favicon first
+      updateFavicon("error");
       showNotification("Please select at least one image!");
       return;
     }
@@ -462,11 +465,38 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   //===================================
-  // Event listener for detect tumor button click
+  // Event listener for detect tumor button
   //===================================
-  document.getElementById("detectTumorBtn").addEventListener("click", () => {
-    applyProcessingOrAugmentation("detect");
-  });
+  document
+    .getElementById("detectTumorBtn")
+    .addEventListener("click", async () => {
+      const button = document.getElementById("detectTumorBtn");
+      const originalText = button.textContent;
+
+      // Add loading state
+      button.classList.add("loading");
+      button.disabled = true;
+
+      try {
+        await applyProcessingOrAugmentation("detect");
+
+        // Show success state
+        button.classList.remove("loading");
+        button.classList.add("success");
+
+        // Reset button after 1 second
+        setTimeout(() => {
+          button.classList.remove("success");
+          button.disabled = false;
+          button.textContent = originalText;
+        }, 1000);
+      } catch (error) {
+        // Reset button immediately on error
+        button.classList.remove("loading");
+        button.disabled = false;
+        button.textContent = originalText;
+      }
+    });
 
   //===================================
   // Initially disable buttons
