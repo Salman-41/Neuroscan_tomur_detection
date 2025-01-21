@@ -189,6 +189,9 @@ def index():
     """Serve the main application page"""
     return render_template('index.html')
 
+#------------------------------------------------------------------------------
+# Upload Routes
+#------------------------------------------------------------------------------
 @app.route('/upload', methods=['POST'])
 def upload_image():
     """Handle image upload requests"""

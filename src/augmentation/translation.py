@@ -13,7 +13,7 @@ def translate_image(image, x, y):
          negative values up.
     """
     M = np.float32([[1, 0, x], [0, 1, y]])  # Create the translation matrix
-    translated = cv2.warpAffine(image, M, (image.shape[1], image.shape[0]))  # Apply the translation
+    translated = cv2.warpAffine(image, M, (image.shape[1], image.shape[0]))
     return translated
 
     
