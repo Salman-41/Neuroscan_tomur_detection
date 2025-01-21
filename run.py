@@ -12,7 +12,7 @@ from src.augmentation import rotation, translation, scaling, flipping, elastic_d
 from ultralytics import YOLO
 from pathlib import Path
 import time
-from typing import Optional, Union  # Add this import
+from typing import Optional, Union
 
 #==============================================================================
 # CONFIGURATION AND INITIALIZATION
