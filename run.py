@@ -400,7 +400,7 @@ def process_images():
 @app.route('/augment', methods=['POST'])
 def augment_images():
     """
-    Apply specified augmentation to one or more images.
+    This route is responsible for applying augmentation to one or more images based on the specified process_type. It retrieves the images from the image_store, processes them, and returns the URLs of the processed images
 
     Returns
     -------
