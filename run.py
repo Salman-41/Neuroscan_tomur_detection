@@ -33,7 +33,7 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif' 'webp'}
 #==============================================================================
 class ImageStore:
     """
-    Persistent cache for storing images with expiration times.
+    Manages in-memory storage of images with expiration times.
 
     Attributes
     ----------
@@ -120,7 +120,7 @@ def allowed_file(filename: str) -> bool:
 
 def save_to_memory(file) -> Union[str, None]:
     """
-    Save an uploaded file to memory with a unique filename.
+    This function saves an uploaded file to memory (using the image_store class) and assigns it a unique filename. It ensures that the file is valid, processes it into an image, and stores it for later use.
 
     Parameters
     ----------
@@ -368,7 +368,7 @@ def uploaded_file(filename: str):
 @app.route('/process', methods=['POST'])
 def process_images():
     """
-    Apply specified preprocessing to one or more images.
+    This route is responsible for applying preprocessing to one or more images based on the specified process_type. It retrieves the images from the image_store, processes them, and returns the URLs of the processed images
 
     Returns
     -------

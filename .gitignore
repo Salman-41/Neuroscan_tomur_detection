@@ -18,11 +18,13 @@ env/
 *.log
 *.sqlite3
 
-# Images (if you don’t want to track them in Git)
+# Images
 data/raw/images/*
 data/raw/labels/*
 data/preprocessed/*
 data/augmented/*
+data/TumorDetectionYolov8
+
 
 # Config files
 config.json
