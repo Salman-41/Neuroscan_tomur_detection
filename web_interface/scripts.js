@@ -27,6 +27,7 @@ const imageState = {
   originalFilenames: [],
   currentFilenames: [],
   lastOperation: null,
+  // history: [],
 };
 
 //===================================
@@ -133,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Wait for transition to complete before hiding
     setTimeout(() => {
       modal.style.display = "none";
-    }, 300); // Match this with your CSS transition time
+    }, 300);
   }
 
   // Update modal close handlers
@@ -228,6 +229,7 @@ document.addEventListener("DOMContentLoaded", () => {
           imageState.currentFilenames = data.image_urls.map((url) =>
             url.split("/").pop()
           );
+          // imageState.history.push(type);
         }
         return;
       } catch (error) {
@@ -254,9 +256,10 @@ document.addEventListener("DOMContentLoaded", () => {
       ? imageState.currentFilenames.length > 0
         ? imageState.currentFilenames
         : imageState.originalFilenames
-      : imageState.originalFilenames;
+      : // : imageState.currentFilenames.length > 0
+        // ? imageState.currentFilenames
+        imageState.originalFilenames;
   }
-
   //===================================
   // Function to display detection results
   //===================================
@@ -469,6 +472,7 @@ document.addEventListener("DOMContentLoaded", () => {
         );
         imageState.currentFilenames = [];
         imageState.lastOperation = null;
+        // imageState.history = [];
       }
     } catch (error) {
       updateFavicon("error");
