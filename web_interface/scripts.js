@@ -218,7 +218,7 @@ document.addEventListener("DOMContentLoaded", () => {
           throw new Error(data.error);
         }
 
-        // Success case
+        // Updates the UI and application state based on the operation results
         updateFavicon("success");
         processedImagesPreview.innerHTML = "";
 
