@@ -265,7 +265,7 @@ document.addEventListener("DOMContentLoaded", () => {
   //===================================
   /**
    * Displays detection results with bounding-box information.
-   * @param {Array} results - The detection results array.
+   * @param {Array} results - The detection results array(image_url, tumor_detected --> bool, details).
    * @returns {void}
    */
   function displayDetectionResults(results) {
